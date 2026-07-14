@@ -1,0 +1,322 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SafeArchFood Guide",
+  "description": "Фізична схема БД для нереляційної JSON-моделі даних програмного продукту SafeArchFood Guide.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["cityVisitor"],
+  "properties": {
+    "cityVisitor": {
+      "$ref": "#/$defs/cityVisitor"
+    }
+  },
+  "$defs": {
+    "cityVisitor": {
+      "description": "Клієнт-відвідувач міста, який використовує програмний продукт для інформаційної підтримки безпечного пересування містом.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "role",
+        "email",
+        "needInformationSupport",
+        "currentLocation",
+        "routes",
+        "plannedRoutes",
+        "safetyAssessments",
+        "foodPlaceLists",
+        "architecturalObjects"
+      ],
+      "properties": {
+        "role": {
+          "description": "Роль користувача у програмному продукті.",
+          "type": "string",
+          "enum": ["Клієнт-відвідувач міста"]
+        },
+        "email": {
+          "description": "Електронна адреса користувача для облікового запису.",
+          "type": "string",
+          "format": "email",
+          "minLength": 6,
+          "maxLength": 100
+        },
+        "needInformationSupport": {
+          "description": "Ознака потреби користувача в інформаційній підтримці.",
+          "type": "boolean"
+        },
+        "currentLocation": {
+          "$ref": "#/$defs/currentLocation"
+        },
+        "routes": {
+          "description": "Список маршрутів користувача.",
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/route"
+          }
+        },
+        "plannedRoutes": {
+          "description": "Список запланованих маршрутів користувача.",
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/plannedRoute"
+          }
+        },
+        "safetyAssessments": {
+          "description": "Список оцінок безпечності, отриманих користувачем.",
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 50,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/safetyAssessment"
+          }
+        },
+        "foodPlaceLists": {
+          "description": "Списки місць харчування, знайдених поруч із маршрутами користувача.",
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/foodPlaceList"
+          }
+        },
+        "architecturalObjects": {
+          "description": "Список архітектурних об’єктів, доступних для вибору користувачем.",
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/architecturalObject"
+          }
+        }
+      }
+    },
+    "currentLocation": {
+      "description": "Поточне географічне розташування користувача.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["geographicLocation"],
+      "properties": {
+        "geographicLocation": {
+          "description": "Текстовий опис поточного місця перебування користувача.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 120,
+          "pattern": "^[A-Za-zА-Яа-яІіЇїЄєҐґ0-9 ,.'’:-]{3,120}$"
+        }
+      }
+    },
+    "place": {
+      "description": "Географічна точка або об’єкт у міському середовищі.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["geographicLocation"],
+      "properties": {
+        "geographicLocation": {
+          "description": "Текстовий опис географічного розташування місця.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 120,
+          "pattern": "^[A-Za-zА-Яа-яІіЇїЄєҐґ0-9 ,.'’:-]{3,120}$"
+        }
+      }
+    },
+    "architecturalObject": {
+      "description": "Міський об’єкт, який має архітектурну цінність або викликає зацікавленість користувача.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["geographicLocation", "architecturalValue"],
+      "properties": {
+        "geographicLocation": {
+          "description": "Текстовий опис географічного розташування архітектурного об’єкта.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 120,
+          "pattern": "^[A-Za-zА-Яа-яІіЇїЄєҐґ0-9 ,.'’:-]{3,120}$"
+        },
+        "architecturalValue": {
+          "description": "Характеристика архітектурної цінності об’єкта.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 150
+        }
+      }
+    },
+    "foodPlace": {
+      "description": "Місце харчування поруч із маршрутом користувача.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["geographicLocation", "foodPlaceType"],
+      "properties": {
+        "geographicLocation": {
+          "description": "Текстовий опис географічного розташування місця харчування.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 120,
+          "pattern": "^[A-Za-zА-Яа-яІіЇїЄєҐґ0-9 ,.'’:-]{3,120}$"
+        },
+        "foodPlaceType": {
+          "description": "Тип місця харчування.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 50
+        }
+      }
+    },
+    "risk": {
+      "description": "Потенційний ризик у міському середовищі.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["riskDescription"],
+      "properties": {
+        "riskDescription": {
+          "description": "Опис події або умови, яка може вплинути на безпеку користувача.",
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 300,
+          "pattern": "^[A-Za-zА-Яа-яІіЇїЄєҐґ0-9 ,.;:!?()'’:-]{10,300}$"
+        }
+      }
+    },
+    "route": {
+      "description": "Маршрут користувача до обраного місця.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["routeNumber", "direction", "destinationPlace", "risks"],
+      "properties": {
+        "routeNumber": {
+          "description": "Порядковий номер маршруту у списку маршрутів користувача.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 999
+        },
+        "direction": {
+          "description": "Опис напрямку руху користувача.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 150
+        },
+        "destinationPlace": {
+          "$ref": "#/$defs/place"
+        },
+        "risks": {
+          "description": "Потенційні ризики поруч із маршрутом.",
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/risk"
+          }
+        }
+      }
+    },
+    "plannedRoute": {
+      "description": "Запланований маршрут користувача.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["routeNumber", "planningState", "direction", "destinationPlace", "nearbyFoodPlaces"],
+      "properties": {
+        "routeNumber": {
+          "description": "Порядковий номер запланованого маршруту.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 999
+        },
+        "planningState": {
+          "description": "Стан планування маршруту.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 50
+        },
+        "direction": {
+          "description": "Опис напрямку руху запланованого маршруту.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 150
+        },
+        "destinationPlace": {
+          "$ref": "#/$defs/place"
+        },
+        "nearbyFoodPlaces": {
+          "description": "Місця харчування поруч із запланованим маршрутом.",
+          "type": "array",
+          "minItems": 0,
+          "maxItems": 30,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/foodPlace"
+          }
+        }
+      }
+    },
+    "safetyAssessment": {
+      "description": "Оцінка безпечності місця або маршруту.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assessmentDate", "assessmentResult", "riskLevelName", "riskLevelValue", "assessedPlace", "risks"],
+      "properties": {
+        "assessmentDate": {
+          "description": "Дата створення оцінки безпечності.",
+          "type": "string",
+          "format": "date"
+        },
+        "assessmentResult": {
+          "description": "Текстовий результат оцінювання безпечності.",
+          "type": "string",
+          "minLength": 3,
+          "maxLength": 150
+        },
+        "riskLevelName": {
+          "description": "Назва рівня потенційного ризику.",
+          "type": "string",
+          "enum": ["низький", "середній", "високий"]
+        },
+        "riskLevelValue": {
+          "description": "Числове значення рівня ризику у відсотках.",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "assessedPlace": {
+          "$ref": "#/$defs/place"
+        },
+        "risks": {
+          "description": "Ризики, на основі яких сформовано оцінку безпечності.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 20,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/risk"
+          }
+        }
+      }
+    },
+    "foodPlaceList": {
+      "description": "Список місць харчування, знайдених поруч із маршрутом користувача.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["foodPlaces"],
+      "properties": {
+        "foodPlaces": {
+          "description": "Масив місць харчування.",
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 30,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/foodPlace"
+          }
+        }
+      }
+    }
+  }
+}

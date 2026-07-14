@@ -1,0 +1,45 @@
+name: Data Schema Code Convention
+
+on:
+  push:
+    paths:
+      - 'DataSchema*.json'
+      - 'ExampleData.json'
+      - '.github/workflows/DataSchemaCodeConvention.yml'
+  workflow_dispatch:
+    inputs:
+      schema_file:
+        description: 'JSON Schema file for validation'
+        required: true
+        default: 'DataSchema.json'
+
+jobs:
+  validate-json-schema:
+    name: Validate JSON Schema
+    runs-on: ubuntu-latest
+
+    env:
+      SCHEMA_FILE: ${{ inputs.schema_file || 'DataSchema.json' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install jsonschema
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install jsonschema
+
+      - name: Check JSON syntax
+        run: |
+          python -m json.tool "$SCHEMA_FILE" > /dev/null
+          python -m json.tool ExampleData.json > /dev/null
+
+      - name: Validate ExampleData.json against JSON Schema
+        run: |
+          python -m jsonschema -i ExampleData.json "$SCHEMA_FILE"

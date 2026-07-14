@@ -1,0 +1,72 @@
+{
+  "cityVisitor": {
+    "role": "Клієнт-відвідувач міста",
+    "email": "visitor@example.com",
+    "needInformationSupport": true,
+    "currentLocation": {
+      "geographicLocation": "Odesa Center"
+    },
+    "routes": [
+      {
+        "routeNumber": 1,
+        "direction": "Route to architectural object",
+        "destinationPlace": {
+          "geographicLocation": "Odesa Opera Theater"
+        },
+        "risks": [
+          {
+            "riskDescription": "Crowded street near the route"
+          }
+        ]
+      }
+    ],
+    "plannedRoutes": [
+      {
+        "routeNumber": 1,
+        "planningState": "planned",
+        "direction": "Route to food place",
+        "destinationPlace": {
+          "geographicLocation": "City Food Area"
+        },
+        "nearbyFoodPlaces": [
+          {
+            "geographicLocation": "Cafe near center",
+            "foodPlaceType": "cafe"
+          }
+        ]
+      }
+    ],
+    "safetyAssessments": [
+      {
+        "assessmentDate": "2026-06-30",
+        "assessmentResult": "Route is acceptable",
+        "riskLevelName": "середній",
+        "riskLevelValue": 45.5,
+        "assessedPlace": {
+          "geographicLocation": "Odesa Opera Theater"
+        },
+        "risks": [
+          {
+            "riskDescription": "Crowded street near the route"
+          }
+        ]
+      }
+    ],
+    "foodPlaceLists": [
+      {
+        "foodPlaces": [
+          {
+            "geographicLocation": "Cafe near center",
+            "foodPlaceType": "cafe"
+          }
+        ]
+      }
+    ],
+    "architecturalObjects": [
+      {
+        "geographicLocation": "Odesa Opera Theater",
+        "architecturalValue": "historical building"
+      }
+    ]
+  }
+}
