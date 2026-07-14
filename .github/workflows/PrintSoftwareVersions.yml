@@ -1,0 +1,46 @@
+name: Print Software Versions
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  print-data-processing-software-versions:
+    name: Print data processing software versions
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print operating system version
+        run: |
+          echo "Operating system:"
+          uname -a
+          lsb_release -a || true
+
+      - name: Print Node.js version
+        run: |
+          echo "Node.js version:"
+          node --version
+
+      - name: Print npm version
+        run: |
+          echo "npm version:"
+          npm --version
+
+  print-database-software-versions:
+    name: Print DBMS software versions
+    runs-on: ubuntu-latest
+    container:
+      image: mongo:7
+
+    steps:
+      - name: Print MongoDB version
+        run: |
+          echo "MongoDB server version:"
+          mongod --version
+
+      - name: Print MongoDB shell version
+        run: |
+          echo "MongoDB shell version:"
+          mongosh --version || true
