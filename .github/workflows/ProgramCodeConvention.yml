@@ -1,0 +1,48 @@
+name: Program Code Convention
+
+on:
+  push:
+    paths:
+      - 'ProgramCode*.js'
+      - '.github/workflows/ProgramCodeConvention.yml'
+  workflow_dispatch:
+    inputs:
+      program_file:
+        description: 'JavaScript file for ESLint check'
+        required: true
+        default: 'ProgramCode.js'
+
+jobs:
+  check-program-code:
+    name: Check JavaScript code convention
+    runs-on: ubuntu-latest
+
+    env:
+      PROGRAM_FILE: ${{ inputs.program_file || 'ProgramCode.js' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Print Node.js and npm versions
+        run: |
+          node --version
+          npm --version
+
+      - name: Run program module
+        run: |
+          node "$PROGRAM_FILE"
+
+      - name: Check JavaScript code convention with ESLint
+        run: |
+          npx eslint@8 "$PROGRAM_FILE" \
+            --no-eslintrc \
+            --env node \
+            --parser-options=ecmaVersion:2021 \
+            --rule 'semi: ["error", "always"]' \
+            --rule 'quotes: ["error", "single"]'
